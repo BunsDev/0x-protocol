@@ -24,8 +24,9 @@ import "@openzeppelin/token/ERC20/ERC20.sol";
 import "@openzeppelin/governance/utils/IVotes.sol";
 import "./IZeroExVotes.sol";
 import {UUPSUpgradeable} from "@openzeppelin/proxy/utils/UUPSUpgradeable.sol";
+import {Initializable} from "@openzeppelin/proxy/utils/Initializable.sol";
 
-contract ZeroExVotes is IZeroExVotes, UUPSUpgradeable {
+contract ZeroExVotes is IZeroExVotes, UUPSUpgradeable, Initializable {
     address public token;
     address public governance;
 
@@ -37,7 +38,7 @@ contract ZeroExVotes is IZeroExVotes, UUPSUpgradeable {
         _;
     }
 
-    function initialize(address _token, address _governance) public onlyProxy {
+    function initialize(address _token, address _governance) public onlyProxy initializer {
         token = _token;
         governance = _governance;
     }

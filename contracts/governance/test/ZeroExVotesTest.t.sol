@@ -41,7 +41,7 @@ contract ZeroExVotesTest is BaseTest {
     }
 
     function testShouldNotBeAbleToReinitialise() public {
-        vm.expectRevert("ZeroExVotes: already initialized");
+        vm.expectRevert("Initializable: contract is already initialized");
         votes.initialize(account2, address(this));
     }
 
