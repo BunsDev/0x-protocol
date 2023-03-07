@@ -106,7 +106,7 @@ contract BaseTest is Test {
         votes = ZeroExVotes(address(votesProxy));
 
         ZRXWrappedToken token = new ZRXWrappedToken(zrxToken, IZeroExVotes(address(votesProxy)));
-        votes.initialize(address(token));
+        votes.initialize(address(token), address(this));
         vm.stopPrank();
 
         return (zrxToken, token, votes);

@@ -23,9 +23,11 @@ import "@openzeppelin/utils/math/Math.sol";
 import "@openzeppelin/token/ERC20/ERC20.sol";
 import "@openzeppelin/governance/utils/IVotes.sol";
 import "./IZeroExVotes.sol";
+import {UUPSUpgradeable} from "@openzeppelin/proxy/utils/UUPSUpgradeable.sol";
 
-contract ZeroExVotes is IZeroExVotes {
+contract ZeroExVotes is IZeroExVotes, UUPSUpgradeable {
     address public token;
+    address public governance;
 
     mapping(address => Checkpoint[]) private _checkpoints;
     Checkpoint[] private _totalSupplyCheckpoints;
@@ -35,9 +37,13 @@ contract ZeroExVotes is IZeroExVotes {
         _;
     }
 
-    function initialize(address _token) public {
-        require(token == address(0), "ZeroExVotes: already initialized");
+    function initialize(address _token, address _governance) public onlyProxy {
         token = _token;
+        governance = _governance;
+    }
+
+    function _authorizeUpgrade(address newImplementation) internal virtual override {
+      require(msg.sender == governance);
     }
 
     /**

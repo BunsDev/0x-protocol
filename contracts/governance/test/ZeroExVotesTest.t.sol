@@ -37,16 +37,12 @@ contract ZeroExVotesTest is BaseTest {
 
     function testShouldCorrectlyInitialiseToken() public {
         assertEq(votes.token(), address(wToken));
-    }
-
-    function testShouldNotBeAbleToInitialiseWithZeroAddressToken() public {
-        ZeroExVotes _votes = new ZeroExVotes();
-        _votes.initialize(address(0));
+        assertEq(votes.governance(), address(this));
     }
 
     function testShouldNotBeAbleToReinitialise() public {
         vm.expectRevert("ZeroExVotes: already initialized");
-        votes.initialize(account2);
+        votes.initialize(account2, address(this));
     }
 
     function testShouldBeAbleToReadCheckpoints() public {
